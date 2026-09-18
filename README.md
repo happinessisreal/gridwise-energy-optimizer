@@ -2,11 +2,61 @@
 **BUP CSE Fest 2026 Hackathon · Online Preliminary Round**  
 *In association with Poridhi.io*
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green.svg)](https://fastapi.tiangolo.com/)
-[![SciPy HiGHS](https://img.shields.io/badge/Solver-SciPy_HiGHS_LP-orange.svg)](https://scipy.org/)
-[![Evaluation Pass](https://img.shields.io/badge/Public_Samples-10%2F10_PASSED_(0.0000_BDT)-brightgreen.svg)]()
-[![Adversarial Tests](https://img.shields.io/badge/Adversarial_Tests-91%2F91_PASSED-brightgreen.svg)]()
+[![Live API](https://img.shields.io/badge/Live_API-Railway_Deployed-success?style=for-the-badge&logo=railway)](https://gridwise-energy-optimizer-production.up.railway.app/health)
+[![Docker GHCR](https://img.shields.io/badge/Docker_Image-GHCR_Public-blue?style=for-the-badge&logo=docker)](https://github.com/users/happinessisreal/packages/container/gridwise-optimizer/settings)
+[![Public Samples](https://img.shields.io/badge/Public_Benchmark-10%2F10_PASSED_(0.0000_BDT)-brightgreen?style=for-the-badge)]()
+[![Pytest](https://img.shields.io/badge/Tests-97%2F97_PASSED-brightgreen?style=for-the-badge)]()
+[![Python](https://img.shields.io/badge/Python-3.11+-informational?style=for-the-badge&logo=python)]()
+
+---
+
+### 🚀 Official Submission & Live Verification Quick Links
+
+| Resource | Link / Access Command | Notes |
+| :--- | :--- | :--- |
+| **🌐 Live Public Base URL** | [`https://gridwise-energy-optimizer-production.up.railway.app`](https://gridwise-energy-optimizer-production.up.railway.app) | Production deployment on Railway |
+| **🩺 Health Readiness Check** | [`GET /health`](https://gridwise-energy-optimizer-production.up.railway.app/health) | Returns `{"status":"ok"}` in < 80ms |
+| **⚡ Primary Optimization API** | `POST /optimize-energy` | Solves 24-hour LP under 5ms |
+| **🐳 Pullable Docker Image** | `docker pull ghcr.io/happinessisreal/gridwise-optimizer:latest` | Hosted on GitHub Container Registry (Multi-stage, non-root) |
+| **📊 Interactive Presentation Deck** | [presentation.html](presentation.html) | Zero-dependency browser deck with ⏱️ 3-minute stopwatch |
+| **📽️ PowerPoint Slide Deck** | [presentation.pptx](presentation.pptx) | 16:9 widescreen slides with bilingual presenter notes |
+| **🎙️ 3-Minute Video Scripts** | [FINAL_VIDEO_SCRIPT.md](FINAL_VIDEO_SCRIPT.md) · [VIDEO_SCRIPT_BANGLA.md](VIDEO_SCRIPT_BANGLA.md) | Timed second-by-second (Bangla & English) |
+| **📦 GitHub Source Repository** | [`happinessisreal/gridwise-energy-optimizer`](https://github.com/happinessisreal/gridwise-energy-optimizer) | Full source, tests, and documentation |
+
+---
+
+### 🏆 10/10 Official Public Benchmark Scorecard
+
+Evaluated live against `https://gridwise-energy-optimizer-production.up.railway.app/optimize-energy`:
+
+| Scenario ID | Test Label / Focus | Ref Cost (BDT) | GridWise Cost (BDT) | Delta (BDT) | Grid Import (kWh) | Physics Replay | Status |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **SAMPLE-01** | Solar reduction (factor 0.2) + no-op | `38,365.00` | `38,365.00` | **0.0000** | 2,692.50 | 0 Violations | **PASS ✅** |
+| **SAMPLE-02** | No charge window (14..15) | `42,885.00` | `42,885.00` | **0.0000** | 2,915.00 | 0 Violations | **PASS ✅** |
+| **SAMPLE-03** | Minimum battery reserve (120 kWh) | `35,480.00` | `35,480.00` | **0.0000** | 2,430.00 | 0 Violations | **PASS ✅** |
+| **SAMPLE-04** | Max grid window (120 kWh cap) | `40,495.00` | `40,495.00` | **0.0000** | 2,645.00 | 0 Violations | **PASS ✅** |
+| **SAMPLE-05** | No discharge window (17..20) | `33,950.00` | `33,950.00` | **0.0000** | 2,430.00 | 0 Violations | **PASS ✅** |
+| **SAMPLE-06** | Multiple directives (solar + reserve) | `34,090.00` | `34,090.00` | **0.0000** | 2,395.00 | 0 Violations | **PASS ✅** |
+| **SAMPLE-07** | Percentage reserve conversion (40%) | `38,550.00` | `38,550.00` | **0.0000** | 2,560.00 | 0 Violations | **PASS ✅** |
+| **SAMPLE-08** | Inverted solar wording (reduced by 80%)| `37,665.00` | `37,665.00` | **0.0000** | 2,490.00 | 0 Violations | **PASS ✅** |
+| **SAMPLE-09** | Overnight window crossing midnight | `34,873.00` | `34,873.00` | **0.0000** | 2,504.00 | 0 Violations | **PASS ✅** |
+| **SAMPLE-10** | Distractor notes with technical chatter| `41,620.00` | `41,620.00` | **0.0000** | 2,715.00 | 0 Violations | **PASS ✅** |
+
+> **Evaluation Guarantee**: 10/10 Reference Benchmark Cases match the official solutions with **exactly 0.0000 BDT difference**, 100% directive extraction accuracy, and zero microgrid physics violations.
+
+---
+
+### ⚡ 5-Second Copy-Paste Evaluation Quickstart
+
+Evaluate the live deployment instantly from any terminal without installing local dependencies:
+
+```bash
+# 1. Verify health readiness (< 80ms response)
+curl -s https://gridwise-energy-optimizer-production.up.railway.app/health
+
+# 2. Run automated verification on SAMPLE-01
+python test_sample_curl.py https://gridwise-energy-optimizer-production.up.railway.app
+```
 
 ---
 
