@@ -186,6 +186,12 @@ Build the container image:
 docker build -t gridwise-optimizer:latest .
 ```
 
+### Pull Pre-built Image from GHCR
+A pre-built, production-ready multi-stage image is hosted publicly on GitHub Container Registry:
+```bash
+docker pull ghcr.io/happinessisreal/gridwise-optimizer:latest
+```
+
 ### Run Docker Container
 ```bash
 docker run -d \
@@ -195,7 +201,7 @@ docker run -d \
   -e LLM_PROVIDER=deepseek \
   -e DEEPSEEK_API_KEY="your_api_key_here" \
   --name gridwise-service \
-  gridwise-optimizer:latest
+  ghcr.io/happinessisreal/gridwise-optimizer:latest
 ```
 
 ### Docker Compose
@@ -211,7 +217,25 @@ curl http://localhost:8000/health
 
 ---
 
-## 7. Verification & Complete Test Commands
+## 7. Presentation Deck & Video Walkthrough (Tie-Breaker Priority #1)
+
+For the mandatory 3-minute video presentation (Page 10 tie-breaker priority #1), complete presentation materials are prepared:
+
+1. **PowerPoint Slide Deck (`presentation.pptx`)**:
+   - Modern 16:9 widescreen layout with dark slate theme, high-contrast typography, and cards.
+   - 6 structured slides with speaker notes attached to each slide.
+2. **Interactive Web Presentation Deck (`presentation.html`)**:
+   - Standalone zero-dependency HTML5 presentation.
+   - Open directly in any browser (`presentation.html`).
+   - Controls: Arrow keys `←` / `→` or `Space` to navigate, `F` for Fullscreen, `N` to toggle speaker notes drawer.
+3. **Timed Video Presentation Script (`VIDEO_SCRIPT.md`)**:
+   - Second-by-second timeline (0:00 to 3:00) calibrated for ~140 words per minute (finishing comfortably at 2:50).
+   - Maps 1-to-1 to all 8 evaluation criteria in the official tie-breaker rubric.
+
+
+---
+
+## 8. Verification & Complete Test Commands
 
 The repository includes four layers of automated verification:
 
@@ -250,7 +274,7 @@ python test_sample_curl.py http://localhost:8000
 
 ---
 
-## 8. Pre-Submit Checklist (Participant Guide Page 11)
+## 9. Pre-Submit Checklist (Participant Guide Page 11)
 
 All 10 verification items from Page 11 of the BUP CSE Fest Participant Guide are 100% satisfied:
 
@@ -267,7 +291,7 @@ All 10 verification items from Page 11 of the BUP CSE Fest Participant Guide are
 
 ---
 
-## 9. Security & Secret Protection Guarantee
+## 10. Security & Secret Protection Guarantee
 
 - **Zero Hardcoded Secrets**: All API keys and secrets are ingested exclusively via environment variables (`.env`).
 - **Controlled Error Sanitization**: Starlette and FastAPI exception handlers catch unhandled server exceptions, log warnings internally without exposing stack traces, and return generic, safe JSON responses (`{"detail": "..."}`) with HTTP 500.
@@ -275,7 +299,8 @@ All 10 verification items from Page 11 of the BUP CSE Fest Participant Guide are
 
 ---
 
-## 10. License & Acknowledgements
+## 11. License & Acknowledgements
 
 Developed for the **BUP CSE Fest 2026 Hackathon · Online Preliminary Round** by Team GridWise, in association with **Poridhi.io**.
 Optimization engine powered by **SciPy HiGHS LP**. ASGI services powered by **FastAPI** and **Uvicorn**.
+
