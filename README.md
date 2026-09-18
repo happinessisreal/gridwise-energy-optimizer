@@ -19,7 +19,6 @@
 | **🩺 Health Check** | [`GET /health`](https://gridwise-energy-optimizer-production.up.railway.app/health) | Returns `{"status":"ok"}` in < 80ms |
 | **⚡ Primary API** | `POST /optimize-energy` | 24-hour LP optimization (< 5ms solve time) |
 | **🐳 Docker Image** | [`docker pull ghcr.io/happinessisreal/gridwise-optimizer:latest`](https://github.com/users/happinessisreal/packages/container/package/gridwise-optimizer) | Hosted on GitHub Container Registry (non-root) |
-| **🎙️ Video Scripts** | [FINAL_VIDEO_SCRIPT.md](FINAL_VIDEO_SCRIPT.md) · [VIDEO_SCRIPT_BANGLA.md](VIDEO_SCRIPT_BANGLA.md) | Calibrated for 2:45 presentation |
 | **📦 GitHub Repository** | [`happinessisreal/gridwise-energy-optimizer`](https://github.com/happinessisreal/gridwise-energy-optimizer) | Full source code, test suites, and documentation |
 
 ---
@@ -217,7 +216,7 @@ python test_sample_curl.py http://localhost:8000
 - [x] **7. Documentation & Quickstart**: Self-contained quickstart, environment variables, multi-provider guides, and test commands.
 - [x] **8. Security & Zero Secrets**: Zero API keys or tokens in repo or Docker image. Controlled HTTP 500 error sanitization.
 - [x] **9. Fallback Docker Container**: Multi-stage `Dockerfile`, non-root security (`appuser:10001`), exposed port 8000, and verified `docker-compose.yml`.
-- [x] **10. 3-Minute Presentation Video Scripts**: [`FINAL_VIDEO_SCRIPT.md`](FINAL_VIDEO_SCRIPT.md), [`VIDEO_SCRIPT_BANGLA.md`](VIDEO_SCRIPT_BANGLA.md).
+- [x] **10. 3-Minute Solution Video**: Prepared and accessible within the 3-minute limit explaining problem understanding, architecture overview, guardrails, and optimization flow.
 
 ---
 
