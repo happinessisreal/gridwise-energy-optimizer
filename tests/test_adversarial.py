@@ -15,6 +15,7 @@ Pytest-compatible test harness covering:
 
 import sys
 import json
+import asyncio
 import math
 import copy
 from pathlib import Path
@@ -40,7 +41,7 @@ from app.guardrails import (
     _clean_finite_float,
     validate_and_guardrail_interpretation,
 )
-from app.llm_interpreter import parse_time_window, fallback_extract_note
+from app.llm_interpreter import parse_time_window, fallback_extract_note, interpret_operator_notes
 
 
 @pytest.fixture(scope="module")
@@ -589,6 +590,26 @@ class TestSecurityAndOfflineGuarantees:
             res = r.json()
             assert len(res.get("hourly_plan", [])) == 24
             assert res.get("total_cost_bdt") is not None
+
+
+# =============================================================================
+# 11. LLM / Fallback Merge (LLM key-name drift)
+# =============================================================================
+
+class TestLlmFallbackMerge:
+    """A valid LLM directive must survive the hybrid merge even when the model names the key 'type'."""
+
+    def test_llm_directive_keyed_type_is_not_overridden_by_fallback(self):
+        # The regex fallback only reads percentages written with '%', so it answers factor 0.5 here.
+        note = "Solar output will fall by 30 percent from 1 PM to 3 PM."
+        llm_entries = [{"note_index": 0, "type": "solar_reduction", "applies": True,
+                        "structured_adjustment": {"hours": [13, 14], "factor": 0.7}}]
+        battery = BatterySpec(capacity_kwh=200, initial_energy_kwh=120, minimum_energy_kwh=40,
+                              max_charge_kwh_per_hour=50, max_discharge_kwh_per_hour=50)
+        with patch("app.llm_interpreter.call_external_llm", return_value=llm_entries):
+            d = asyncio.run(interpret_operator_notes([note], battery))[0]
+        assert d.directive_type == "solar_reduction"
+        assert d.structured_adjustment == {"hours": [13, 14], "factor": 0.7}
 
 
 if __name__ == "__main__":

@@ -43,6 +43,7 @@ Your task is to interpret 1 to 3 short operator notes into machine-checkable ope
   - "from 6 PM until 9 PM" -> [18, 19, 20]
   - "from 6 PM until 10 PM" -> [18, 19, 20, 21]
   - "13:00 and 15:00" -> [13, 14]
+- Each entry must be a JSON object with exactly these keys: "note_index" (integer), "applies" (boolean), "directive_type", "structured_adjustment" (object, or null for no_op), "explanation" (short string).
 - For every non-no_op directive, applies must be true. For no_op, applies must be false.
 - Hours must be strictly ascending unique integers from 0 through 23.
 - Output MUST be valid JSON with top-level key "directive_interpretation" containing a list in note_index order (0..N-1).
@@ -357,7 +358,7 @@ async def interpret_operator_notes(
         for i, note in enumerate(operator_notes):
             llm_entry = raw_by_idx.get(i)
             fb_entry = fallback_extract_note(note, i, battery.capacity_kwh)
-            if not llm_entry or llm_entry.get("directive_type") in ("no_op", None, ""):
+            if not llm_entry or (llm_entry.get("directive_type") or llm_entry.get("type")) in ("no_op", None, ""):
                 if fb_entry.get("applies", False):
                     merged.append(fb_entry)
                 else:
