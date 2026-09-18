@@ -459,17 +459,16 @@ def build_pptx():
 
     s4.notes_slide.notes_text_frame.text = (
         "=== বাংলা স্ক্রিপ্ট (BANGLA) [1:35 - 2:15] ===\n"
-        "GridWise-এর মূল চালিকাশক্তি হলো আমাদের অপটিমাইজেশন ইঞ্জিন। এটিকে ৯৬টি ডিসিশন ভেরিয়েবল এবং ৭৩টি কনস্ট্রেইন্ট "
-        "দিয়ে একটি কনটিনিউয়াস লিনিয়ার প্রোগ্রাম হিসেবে ফর্মুলেট করা হয়েছে এবং SciPy-এর HiGHS সিমপ্লেক্স সলভার দিয়ে সমাধান করা হয়েছে। "
-        "সলভারটি মাইক্রোগ্রিডের ৭টি মৌলিক ফিজিক্যাল আইন অক্ষরে অক্ষরে মেনে চলে: প্রতি ঘণ্টায় ক্যাম্পাসের নিখুঁত এনার্জি ব্যালান্স, "
-        "সোলার কার্টেইলমেন্ট সীমা, ইনভার্টারের চার্জ ও ডিসচার্জ পাওয়ার রেট লিমিট, ডায়নামিক ব্যাটারি রিজার্ভ ফ্লোর, "
-        "এবং সবচেয়ে গুরুত্বপূর্ণ: এন্ড-অফ-ডে ব্যাটারি নিউট্রালিটি (E24 = E0), যা নিশ্চিত করে ক্যাম্পাসের ব্যাটারি সারা দিনে অপচয় হয়ে "
-        "রাতে খালি থাকবে না। আমাদের সলভার ৫ মিলি-সেকেন্ডের কম সময়ে গাণিতিকভাবে নিখুঁত গ্লোবাল মিনিমাম খরচ বের করে দেয়।\n\n"
+        "এবার আসা যাক আমাদের অপটিমাইজেশন ফর্মুলেশনে: আমরা মাইক্রোগ্রিডের ২৪ ঘণ্টার এনার্জি শিডিউলিংকে ৯৬টি ডিসিশন ভেরিয়েবল "
+        "এবং ৭৩টি ফিজিক্যাল কনস্ট্রেইন্ট দিয়ে একটি কনটিনিউয়াস লিনিয়ার প্রোগ্রাম হিসেবে মডেল করেছি। ব্যাটারির ডাইনামিক্স আনরোল করে "
+        "ক্যাপাসিটি ও ডায়নামিক রিজার্ভ ফ্লোর নির্ধারণ করা হয়েছে এবং কঠোরভাবে নিশ্চিত করা হয়েছে এন্ড-অফ-ডে ব্যাটারি নিউট্রালিটি (E24 = E0)। "
+        "পুরো সিস্টেমটি SciPy-এর HiGHS সিমপ্লেক্স সলভার দিয়ে মাত্র ৫ মিলি-সেকেন্ডের কম সময়ে সমাধান করা হয়, যা গাণিতিকভাবে সর্বনিম্ন খরচ নিশ্চিত করে। "
+        "এই ফর্মুলেশনের সম্পূর্ণ গাণিতিক ডেরিভেশন এবং গ্লোবাল অপটিমালিটির বিশদ প্রমাণ আমাদের রিপোজিটরির README-এর সেকশন ৩-এ বিস্তারিতভাবে উল্লেখ করা আছে।\n\n"
         "=== ENGLISH SCRIPT [1:35 - 2:15] ===\n"
-        "At the core is our optimization engine, formulated as a continuous Linear Program "
-        "with 96 decision variables and 73 constraints. Solved using SciPy's HiGHS solver, it guarantees "
-        "the global mathematical minimum cost in under 5 milliseconds. Crucially, it enforces end-of-day "
-        "battery neutrality, ensuring starting energy equals ending energy."
+        "At the core is our optimization engine: we formulated the 24-hour campus microgrid as a continuous Linear Program "
+        "with 96 decision variables and 73 physical constraints. Solved using SciPy's HiGHS solver in under 5 milliseconds, it guarantees "
+        "the mathematically global minimum cost. Crucially, it enforces end-of-day battery neutrality (E24 = E0). "
+        "The complete step-by-step mathematical derivation and analytical proof of global optimality are documented in Section 3 of our README."
     )
 
     # ==========================================

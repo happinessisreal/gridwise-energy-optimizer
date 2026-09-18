@@ -49,26 +49,21 @@
 
 ---
 
-### [0:55 - 1:45] Scene 3: How We Got the Formula & Proof of Global Optimality (50s)
-**Slide on Screen**: Slide 4 (Microgrid Physics & Continuous LP Formulation)
-
-> "Now, how did we derive the optimization formula?
+#### [0:55 - 1:35] Scene 3: Optimization Formulation & HiGHS LP Solver (40s)
+*(Show Slide 4 on screen)*
+> "Now, turning to our optimization formulation:
 > 
-> The hourly battery state follows the discrete recurrence: $E[h+1] = E[h] + c[h] - d[h]$.
-> By unrolling this recurrence across all 24 hours, cumulative energy becomes:
-> $$E[h] = E_0 + \sum_{i=0}^{h-1} (c[i] - d[i])$$
+> We formulated the 24-hour campus microgrid as a continuous Linear Program with **96 decision variables** and **73 physical constraints**.
 > 
-> This unrolling transforms complex battery storage bounds into **48 standard linear inequalities**, while Kirchhoff's campus energy balance forms **24 linear equality constraints**. Crucially, we enforce **end-of-day battery neutrality** via the equality constraint $\sum (c[h] - d[h]) = 0$, guaranteeing $E_{24} = E_0$ so stored energy is not exhausted overnight.
+> By unrolling the hourly battery state recurrence across the 24-hour horizon, we mapped the battery capacity bounds and dynamic reserve floors directly into linear inequalities, while enforcing Kirchhoff's campus energy balance and **end-of-day battery neutrality** ($E_{24} = E_0$), ensuring stored energy is not exhausted overnight.
 > 
-> We formulated this as a continuous Linear Program with **96 decision variables** and solved it using **SciPy's HiGHS dual simplex solver**.
+> We solve this continuous LP using **SciPy's HiGHS dual simplex solver**, which guarantees the mathematically global minimum electricity cost in **under 5 milliseconds**, eliminating the local traps of heuristic approaches.
 > 
-> Why does this guarantee the absolute global minimum?
-> Because all 73 constraints are affine, the feasible search space forms a **bounded convex polytope**. In convex optimization, every local minimum is guaranteed to be a **global minimum**—eliminating the local traps of heuristic algorithms.
-> HiGHS terminates with **zero KKT duality gap**, and our $+10^{-7} (c[h] + d[h])$ regularizer strictly enforces $c[h] \cdot d[h] = 0$, eliminating battery churn without integer variables."
+> The complete step-by-step mathematical derivation and analytical proof of global optimality are fully detailed in **Section 3 of our README**."
 
 ---
 
-### [1:45 - 2:25] Scene 4: 10/10 Benchmark Verification & Adversarial Hardening (40s)
+### [1:35 - 2:15] Scene 4: 10/10 Benchmark Verification & Adversarial Hardening (40s)
 **Slide on Screen**: Slide 5 (Official Benchmark Table)
 
 > "Let's see the empirical verification.
@@ -82,7 +77,7 @@
 
 ---
 
-### [2:25 - 2:50] Scene 5: Production Deployment & Pre-Submit Compliance (25s)
+### [2:15 - 2:45] Scene 5: Production Deployment & Pre-Submit Compliance (30s)
 **Slide on Screen**: Slide 6 (Production Readiness & Checklist)
 
 > "GridWise is fully production-ready:
@@ -120,24 +115,24 @@
 
 ---
 
-### [0:55 - 1:45] দৃশ্য ৩: ফর্মুলা ডেরিভেশন ও গ্লোবাল অপটিমালিটির গাণিতিক প্রমাণ (৫০ সেকেন্ড)
-> *"এখন আসা যাক, কীভাবে আমরা অপটিমাইজেশন ফর্মুলাটি ডেরাইভ করেছি।*
+### [0:55 - 1:35] দৃশ্য ৩: লিনিয়ার প্রোগ্রামিং ফর্মুলেশন ও গ্লোবাল অপটিমালিটি (৪০ সেকেন্ড)
+**স্ক্রিনে যা থাকবে**: স্লাইড ৪ (LP Formulation, HiGHS Solver & 7 Physical Laws)
+
+> *"এবার আসা যাক আমাদের অপটিমাইজেশন ফর্মুলেশনে:*
 > 
-> *ব্যাটারির এনার্জি ডাইনামিক্সের সমীকরণ হলো: $E[h+1] = E[h] + c[h] - d[h]$।*
-> *এই সমীকরণটিকে ২৪ ঘণ্টার জন্য আনরোল (unroll) করলে যেকোনো ঘণ্টার কিউমুলেটিভ এনার্জি দাঁড়ায়:*
-> $$E[h] = E_0 + \sum_{i=0}^{h-1} (c[i] - d[i])$$
+> *আমরা মাইক্রোগ্রিডের ২৪ ঘণ্টার এনার্জি শিডিউলিংকে **৯৬টি ডিসিশন ভেরিয়েবল** এবং **৭৩টি ফিজিক্যাল কনস্ট্রেইন্ট** দিয়ে একটি কনটিনিউয়াস লিনিয়ার প্রোগ্রাম (Continuous Linear Program) হিসেবে মডেল করেছি।*
 > 
-> *এই আনরোলিংয়ের মাধ্যমে আমরা ব্যাটারির জটিল ক্যাপাসিটি এবং ডায়নামিক রিজার্ভ ফ্লোরকে **৪৮টি স্ট্যান্ডার্ড লিনিয়ার অসমতায় (inequality constraints)** রূপান্তর করেছি, এবং ক্যাম্পাসের কার্শফ ব্যালান্স সমীকরণ থেকে পেয়েছি **২৪টি লিনিয়ার সমতা**। পাশাপাশি, আমরা নিশ্চিত করেছি **এন্ড-অফ-ডে ব্যাটারি নিউট্রালিটি** ($\sum (c - d) = 0 \iff E_{24} = E_0$), যাতে ক্যাম্পাসের ব্যাটারি সারা দিনে অপচয় হয়ে রাতে খালি না থাকে।*
+> *ব্যাটারির ডাইনামিক্স আনরোল করে ক্যাপাসিটি ও ডায়নামিক রিজার্ভ ফ্লোর নির্ধারণ করা হয়েছে এবং কঠোরভাবে নিশ্চিত করা হয়েছে **এন্ড-অফ-ডে ব্যাটারি নিউট্রালিটি** ($E_{24} = E_0$) — যাতে ক্যাম্পাসের ব্যাটারি সারা দিনে অপচয় হয়ে রাতে খালি না থাকে।*
 > 
-> *পুরো সিস্টেমটিকে **৯৬টি ডিসিশন ভেরিয়েবল** দিয়ে একটি কনটিনিউয়াস লিনিয়ার প্রোগ্রাম হিসেবে মডেল করে **SciPy-এর HiGHS সিমপ্লেক্স সলভার** দিয়ে সমাধান করা হয়েছে।*
+> *পুরো সিস্টেমটি **SciPy-এর HiGHS সিমপ্লেক্স সলভার** দিয়ে মাত্র ৫ মিলি-সেকেন্ডের কম সময়ে সমাধান করা হয়, যা গাণিতিকভাবে পরম সর্বনিম্ন খরচ (Global Minimum Cost) নিশ্চিত করে।*
 > 
-> *কেন এটি গাণিতিকভাবে পরম গ্লোবাল মিনিমাম নিশ্চিত করে?*
-> *কারণ আমাদের ৭৩টি কনস্ট্রেইন্ট মিলে সার্চ স্পেসটিকে একটি **ক্লোজড কনভেক্স পলিটোপে** পরিণত করে। কনভেক্স স্পেসে কোনো লোকাল মিনিমা থাকে না — যেকোনো লোকাল অপটিমামই নিশ্চিতভাবে গ্লোবাল অপটিমাম।*
-> *HiGHS সলভার **জিরো KKT ডুয়ালিটি গ্যাপ** দিয়ে টার্মিনেট করে, এবং আমাদের অবজেক্টিভের ক্ষুদ্র $+10^{-7} (c + d)$ টার্মটি নিশ্চিত করে $c[h] \cdot d[h] = 0$, যা কোনো ইন্টিজার ভেরিয়েবল ছাড়াই ব্যাটারির অপ্রয়োজনীয় চর্ন সম্পূর্ণ দূর করে।"*
+> *আমরা লিনিয়ার প্রোগ্রামিং ব্যবহার করে কীভাবে সমীকরণগুলো ডেরাইভ করেছি এবং এর সম্পূর্ণ গাণিতিক প্রমাণ ও গ্লোবাল অপটিমালিটির বিশদ অ্যানালিটিক্যাল প্রুফ আমাদের রিপোজিটরির **README-এর সেকশন ৩-এ বিস্তারিতভাবে উল্লেখ করা আছে**।"*
 
 ---
 
-### [1:45 - 2:25] দৃশ্য ৪: ১০/১০ বেঞ্চমার্ক ও অ্যাডভারসারিয়াল ভেরিফিকেশন (৪০ সেকেন্ড)
+### [1:35 - 2:15] দৃশ্য ৪: ১০/১০ বেঞ্চমার্ক ও অ্যাডভারসারিয়াল ভেরিফিকেশন (৪০ সেকেন্ড)
+**স্ক্রিনে যা থাকবে**: স্লাইড ৫ (Official Benchmark Table & Terminal Output)
+
 > *"এবার সরাসরি আমাদের সিস্টেমের ভেরিফিকেশন দেখে নেওয়া যাক।*
 > 
 > *অফিসিয়াল ১০টি রেফারেন্স স্যাম্পল কেসের ওপর টেস্ট চালিয়ে আমরা দেখতে পাচ্ছি:*
@@ -149,7 +144,9 @@
 
 ---
 
-### [2:25 - 2:50] দৃশ্য ৫: প্রোডাকশন ডেপ্লয়মেন্ট ও চেকলিস্ট (২৫ সেকেন্ড)
+### [2:15 - 2:45] দৃশ্য ৫: প্রোডাকশন ডেপ্লয়মেন্ট ও চেকলিস্ট (৩০ সেকেন্ড)
+**স্ক্রিনে যা থাকবে**: স্লাইড ৬ (Production Readiness & Pre-Submit Checklist)
+
 > *"GridWise সম্পূর্ণ প্রোডাকশন-রেডি:*
 > *- লাইভ ক্লাউড এপিআই: `gridwise-energy-optimizer-production.up.railway.app`*
 > *- ডকার ইমেজ: `ghcr.io/happinessisreal/gridwise-optimizer:latest`*
