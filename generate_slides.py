@@ -1,8 +1,7 @@
 """
 GridWise Presentation Generator
-Creates both:
-1. presentation.pptx (PowerPoint 16:9 widescreen presentation)
-2. presentation.html (Standalone interactive web presentation with full-screen, keyboard navigation, and speaker notes)
+Creates presentation.pptx (16:9 widescreen) with bilingual speaker notes (Bangla + English)
+and structured architecture, guardrail, optimization, and benchmark cards.
 """
 
 import os
@@ -20,14 +19,14 @@ def build_pptx():
     blank_layout = prs.slide_layouts[6]
 
     # Theme palette
-    C_BG = RGBColor(15, 23, 42)        # Slate 900 #0f172a
-    C_CARD = RGBColor(30, 41, 59)      # Slate 800 #1e293b
-    C_CARD_BORDER = RGBColor(51, 65, 85) # Slate 700
-    C_CYAN = RGBColor(14, 165, 233)    # Sky 500 #0ea5e9
-    C_GREEN = RGBColor(16, 185, 129)   # Emerald 500 #10b981
-    C_YELLOW = RGBColor(245, 158, 11)  # Amber 500
-    C_WHITE = RGBColor(248, 250, 252)  # Slate 50
-    C_MUTED = RGBColor(148, 163, 184)  # Slate 400
+    C_BG = RGBColor(7, 10, 18)         # Dark Navy #070a12
+    C_CARD = RGBColor(18, 25, 42)       # Slate 850 #12192a
+    C_CARD_BORDER = RGBColor(56, 75, 112) # Border Slate
+    C_CYAN = RGBColor(56, 189, 248)     # Sky 400 #38bdf8
+    C_GREEN = RGBColor(52, 211, 153)    # Emerald 400 #34d399
+    C_YELLOW = RGBColor(251, 191, 36)   # Amber 400 #fbbf24
+    C_WHITE = RGBColor(248, 250, 252)   # Slate 50
+    C_MUTED = RGBColor(148, 163, 184)   # Slate 400
 
     def add_bg(slide):
         bg = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, prs.slide_width, prs.slide_height)
@@ -50,33 +49,33 @@ def build_pptx():
             p = tf.paragraphs[0]
             p.text = title
             p.font.name = "Segoe UI"
-            p.font.size = Pt(14)
+            p.font.size = Pt(13)
             p.font.bold = True
             p.font.color.rgb = C_CYAN
         return card
 
     # ==========================================
-    # SLIDE 1: Title Slide
+    # SLIDE 1: Title & Challenge Dynamics
     # ==========================================
     s1 = prs.slides.add_slide(blank_layout)
     add_bg(s1)
 
-    bar = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(1.0), Inches(1.3), Inches(0.15), Inches(4.8))
+    bar = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(1.0), Inches(1.1), Inches(0.15), Inches(5.2))
     bar.fill.solid()
     bar.fill.fore_color.rgb = C_CYAN
     bar.line.fill.background()
 
-    tb = s1.shapes.add_textbox(Inches(1.4), Inches(1.2), Inches(11.0), Inches(5.0))
+    tb = s1.shapes.add_textbox(Inches(1.4), Inches(1.0), Inches(11.0), Inches(3.0))
     tf = tb.text_frame
     tf.word_wrap = True
 
     p0 = tf.paragraphs[0]
     p0.text = "BUP CSE FEST 2026 HACKATHON · PRELIMINARY ROUND"
     p0.font.name = "Segoe UI"
-    p0.font.size = Pt(14)
+    p0.font.size = Pt(13)
     p0.font.bold = True
     p0.font.color.rgb = C_CYAN
-    p0.space_after = Pt(14)
+    p0.space_after = Pt(10)
 
     p1 = tf.add_paragraph()
     p1.text = "GridWise Energy Optimizer"
@@ -84,26 +83,51 @@ def build_pptx():
     p1.font.size = Pt(44)
     p1.font.bold = True
     p1.font.color.rgb = C_WHITE
-    p1.space_after = Pt(10)
+    p1.space_after = Pt(8)
 
     p2 = tf.add_paragraph()
     p2.text = "Provably Optimal Smart Campus Microgrid Management via Deep LLM Directive Interpretation and SciPy HiGHS Linear Programming"
     p2.font.name = "Segoe UI"
-    p2.font.size = Pt(18)
+    p2.font.size = Pt(17)
     p2.font.color.rgb = C_MUTED
-    p2.space_after = Pt(36)
+    p2.space_after = Pt(18)
 
-    p3 = tf.add_paragraph()
-    p3.text = "Track: Smart Campus Energy Optimization (GridWise LLM)    |    Duration: 3-Minute Defense"
-    p3.font.name = "Segoe UI"
-    p3.font.size = Pt(14)
-    p3.font.color.rgb = C_GREEN
+    # 4 Quick Campus Element Cards
+    cx_w = Inches(2.65)
+    cx_gap = Inches(0.24)
+    c_y = Inches(4.3)
+    c_h = Inches(1.7)
+
+    elements = [
+        ("☀️ Solar PV", "Rooftop generation with dynamic operational curtailment factor."),
+        ("🔋 BESS Battery", "500 kWh storage strictly adhering to E24 = E0 end-of-day neutrality."),
+        ("⚡ Dynamic Grid", "Time-of-Use tariffs optimized for peak-valley cost arbitrage."),
+        ("📝 Directives", "Natural-language operator constraints normalized by guardrails.")
+    ]
+    for i, (title, desc) in enumerate(elements):
+        add_card(s1, Inches(1.4) + i * (cx_w + cx_gap), c_y, cx_w, c_h, title=title)
+        tb_e = s1.shapes.add_textbox(Inches(1.55) + i * (cx_w + cx_gap), c_y + Inches(0.55), cx_w - Inches(0.3), Inches(0.9))
+        etf = tb_e.text_frame
+        etf.word_wrap = True
+        ep = etf.paragraphs[0]
+        ep.text = desc
+        ep.font.name = "Segoe UI"
+        ep.font.size = Pt(10.5)
+        ep.font.color.rgb = C_MUTED
 
     s1.notes_slide.notes_text_frame.text = (
-        "[0:00 - 0:25] Welcome judges. This is GridWise, our solution for the BUP CSE Fest 2026 "
-        "Smart Campus Energy Optimization Challenge. Universities manage rooftop solar, dynamic tariffs, "
-        "and battery storage, while facility managers provide unstructured constraints. GridWise bridges "
-        "natural language directives with mathematically provable linear optimization."
+        "=== বাংলা স্ক্রিপ্ট (BANGLA) [0:00 - 0:25] ===\n"
+        "সম্মানিত বিচারকমণ্ডলী, সবাইকে স্বাগত জানাচ্ছি আমাদের প্রজেক্ট GridWise-এ — BUP CSE Fest 2026 "
+        "স্মার্ট ক্যাম্পাস এনার্জি অপটিমাইজেশন চ্যালেঞ্জের জন্য আমাদের সমাধান। একটি আধুনিক বিশ্ববিদ্যালয় ক্যাম্পাসে "
+        "ওঠানামা করা রুফটপ সোলার জেনারেশন, ক্যাম্পাসের জটিল ইলেকট্রিক্যাল ডিমান্ড এবং পরিবর্তনশীল গ্রিড ট্যারিফের ভারসাম্য "
+        "রক্ষা করা অত্যন্ত জটিল। এর ওপর ফ্যাসিলিটি ম্যানেজাররা বিভিন্ন অপারেশনাল নির্দেশনা দেন সাধারণ ভাষায়। "
+        "আমাদের মিশন: এই প্রাকৃতিক ভাষার নির্দেশনাগুলোকে নির্ভুল গাণিতিক কনস্ট্রেইন্টে রূপান্তর করে ২৪ ঘণ্টার এমন একটি "
+        "ব্যাটারি শিডিউল তৈরি করা, যা বিদ্যুৎ খরচ সর্বনিম্ন রাখবে এবং ক্যাম্পাসের কোনো ফিজিক্যাল নিয়ম ভঙ্গ করবে না।\n\n"
+        "=== ENGLISH SCRIPT [0:00 - 0:25] ===\n"
+        "Welcome judges. This is GridWise, our solution for the BUP CSE Fest 2026 Smart Campus Energy "
+        "Optimization Challenge. Universities manage fluctuating rooftop solar, dynamic tariffs, and battery storage, "
+        "while facility managers provide unstructured constraints. GridWise bridges natural language directives "
+        "with mathematically provable linear optimization."
     )
 
     # ==========================================
@@ -140,22 +164,22 @@ def build_pptx():
             "tech": "FastAPI & Pydantic v2",
             "color": C_CYAN,
             "bullets": [
-                "Strict POST /optimize-energy contract",
-                "Relational schema validation (E0 <= capacity)",
-                "Sanitizes NaN, Inf, non-finite floats",
-                "Fails fast with HTTP 400 on malformed payloads"
+                "Strict Section 07 API contracts.",
+                "Relational: E0 <= Capacity, Min Reserve <= Capacity.",
+                "Sanitizes NaN, Inf, non-finite floats.",
+                "Fails fast with structured HTTP 400."
             ]
         },
         {
             "num": "02",
             "title": "LLM Interpreter",
-            "tech": "Multi-Provider + Fallback",
+            "tech": "Multi-Provider Adapter",
             "color": C_YELLOW,
             "bullets": [
-                "Zero-shot prompting on DeepSeek-V3 / Groq / OpenAI",
-                "Direct JSON schema output format",
-                "Discriminates operational notes vs distractor chatter",
-                "Built-in offline regex fallback ensures 0% downtime"
+                "Zero-shot extraction on DeepSeek / Groq / OpenAI.",
+                "Discriminates real intent vs operator chatter.",
+                "Built-in offline regex fallback ensures 0% downtime.",
+                "100% service uptime even without API keys."
             ]
         },
         {
@@ -165,9 +189,9 @@ def build_pptx():
             "color": C_GREEN,
             "bullets": [
                 "Invariant: applies == False <=> no_op",
-                "Hour window normalization ([0..23], ascending)",
-                "Disambiguates 'reduced by' vs 'reduced to'",
-                "Converts percentage battery reserves to kWh"
+                "Hour normalization ([0..23], ascending).",
+                "Disambiguates 'reduced by' vs 'reduced to'.",
+                "Converts percentage battery reserves to kWh."
             ]
         },
         {
@@ -176,10 +200,10 @@ def build_pptx():
             "tech": "SciPy Continuous Solver",
             "color": C_WHITE,
             "bullets": [
-                "96 decision variables, 73 microgrid constraints",
-                "Guarantees exact mathematical global minimum",
-                "Solves in < 5 milliseconds",
-                "Independent physics replay validates all 7 laws"
+                "96 decision variables, 73 microgrid constraints.",
+                "Guarantees exact mathematical global minimum.",
+                "Solves 24-hour horizon in < 5 ms.",
+                "Independent physics replay validates all 7 laws."
             ]
         }
     ]
@@ -224,7 +248,16 @@ def build_pptx():
             bp.space_after = Pt(8)
 
     s2.notes_slide.notes_text_frame.text = (
-        "[0:25 - 0:55] Our core design philosophy: never trust generative AI with raw microgrid math. "
+        "=== বাংলা স্ক্রিপ্ট (BANGLA) [0:25 - 0:55] ===\n"
+        "আমাদের সিস্টেম আর্কিটেকচারের মূল দর্শন একটাই: কখনোই জেনারেটিভ এআই-এর ওপর র (raw) মাইক্রোগ্রিড ম্যাথ "
+        "বা সমীকরণ সমাধানের দায়িত্ব ছেড়ে দেওয়া যাবে না। এজন্য আমরা তৈরি করেছি একটি ডিকাপল্ড চার স্টেজের পাইপলাইন: "
+        "প্রথমত, আমাদের LLM ডিরেক্টিভ ইন্টারপ্রেটার DeepSeek-V3, Groq কিংবা OpenAI ব্যবহার করে জিরো-শট প্রম্পটিংয়ের "
+        "মাধ্যমে অপারেটরের নোট থেকে আসল ইনটেন্ট বের করে আনে এবং অপ্রাসঙ্গিক মন্তব্য সম্পূর্ণ উপেক্ষা করে। "
+        "দ্বিতীয়ত, যদি কোনো কারণে এক্সটার্নাল এআই সার্ভিসে নেটওয়ার্ক লেটেন্সি বা এপিআই ফেইলিওর দেখা দেয়, "
+        "আমাদের সিস্টেমে থাকা অফলাইন ডিটারমিনিস্টিক রেজেক্স পার্সার স্বয়ংক্রিয়ভাবে ব্যাকআপ নেয় — যা নিশ্চিত করে "
+        "১০০% সিস্টেম আপটাইম এবং জিরো ডাউনটাইম।\n\n"
+        "=== ENGLISH SCRIPT [0:25 - 0:55] ===\n"
+        "Our core design philosophy: never trust generative AI with raw microgrid math. "
         "We built a decoupled 4-stage pipeline. Stage 1 validates schemas. Stage 2 uses DeepSeek or Groq "
         "for semantic extraction, backed by an offline regex engine. Stage 3 normalizes constraints deterministically. "
         "Stage 4 executes continuous linear programming in SciPy HiGHS, validated by an independent physics replay."
@@ -313,7 +346,15 @@ def build_pptx():
             bp.space_after = Pt(12)
 
     s3.notes_slide.notes_text_frame.text = (
-        "[0:55 - 1:35] Before reaching the LP solver, every directive must pass our guardrail layer. "
+        "=== বাংলা স্ক্রিপ্ট (BANGLA) [0:55 - 1:35] ===\n"
+        "সলভারে পৌঁছানোর আগে প্রতিটি ডিরেক্টিভকে পার হতে হয় আমাদের ডিটারমিনিস্টিক গার্ডরেইল লেয়ার। "
+        "এই লেয়ারটি নিশ্চিত করে মূল গাণিতিক নীতি: applies মান false হবে কেবল এবং কেবল যদি ডিরেক্টিভটি একটি no_op হয়। "
+        "আমরা বাস্তব জীবনের নানা জটিল অ্যাডভারসারিয়াল এজ-কেস সমাধান করেছি: 'reduced by 80%' এবং 'reduced to 20%' "
+        "উভয়কেই ফ্যাক্টর ০.২০-এ রূপান্তর করা, দুপুর ১২টা বা মধ্যরাত অতিক্রম করা টাইম উইন্ডো নরমালাইজ করা, "
+        "ব্যাটারি চার্জিং ও ডিসচার্জিংয়ের সাবস্ট্রিং কনফ্লিক্ট সমাধান করা, এবং NaN ও ইনফিনিটির মতো ক্ষতিকর ইনপুট ফিল্টার করা। "
+        "আমাদের ৯১টি টেস্ট ভেক্টরের অ্যাডভারসারিয়াল টেস্ট স্যুটে প্রতিটি এজ-কেস সফলভাবে পাস করেছে।\n\n"
+        "=== ENGLISH SCRIPT [0:55 - 1:35] ===\n"
+        "Before reaching the LP solver, every directive must pass our guardrail layer. "
         "We enforce the invariant that applies is false if and only if directive_type is no_op. "
         "We hardened the system against real-world adversarial attacks: disambiguating 'reduced by' vs 'reduced to', "
         "handling noon-crossing intervals, and preventing substring collisions. Our 91-test adversarial suite "
@@ -417,7 +458,15 @@ def build_pptx():
         ip2.space_after = Pt(10)
 
     s4.notes_slide.notes_text_frame.text = (
-        "[1:35 - 2:15] At the core is our optimization engine, formulated as a continuous Linear Program "
+        "=== বাংলা স্ক্রিপ্ট (BANGLA) [1:35 - 2:15] ===\n"
+        "GridWise-এর মূল চালিকাশক্তি হলো আমাদের অপটিমাইজেশন ইঞ্জিন। এটিকে ৯৬টি ডিসিশন ভেরিয়েবল এবং ৭৩টি কনস্ট্রেইন্ট "
+        "দিয়ে একটি কনটিনিউয়াস লিনিয়ার প্রোগ্রাম হিসেবে ফর্মুলেট করা হয়েছে এবং SciPy-এর HiGHS সিমপ্লেক্স সলভার দিয়ে সমাধান করা হয়েছে। "
+        "সলভারটি মাইক্রোগ্রিডের ৭টি মৌলিক ফিজিক্যাল আইন অক্ষরে অক্ষরে মেনে চলে: প্রতি ঘণ্টায় ক্যাম্পাসের নিখুঁত এনার্জি ব্যালান্স, "
+        "সোলার কার্টেইলমেন্ট সীমা, ইনভার্টারের চার্জ ও ডিসচার্জ পাওয়ার রেট লিমিট, ডায়নামিক ব্যাটারি রিজার্ভ ফ্লোর, "
+        "এবং সবচেয়ে গুরুত্বপূর্ণ: এন্ড-অফ-ডে ব্যাটারি নিউট্রালিটি (E24 = E0), যা নিশ্চিত করে ক্যাম্পাসের ব্যাটারি সারা দিনে অপচয় হয়ে "
+        "রাতে খালি থাকবে না। আমাদের সলভার ৫ মিলি-সেকেন্ডের কম সময়ে গাণিতিকভাবে নিখুঁত গ্লোবাল মিনিমাম খরচ বের করে দেয়।\n\n"
+        "=== ENGLISH SCRIPT [1:35 - 2:15] ===\n"
+        "At the core is our optimization engine, formulated as a continuous Linear Program "
         "with 96 decision variables and 73 constraints. Solved using SciPy's HiGHS solver, it guarantees "
         "the global mathematical minimum cost in under 5 milliseconds. Crucially, it enforces end-of-day "
         "battery neutrality, ensuring starting energy equals ending energy."
@@ -516,7 +565,14 @@ def build_pptx():
         p_row.space_after = Pt(3)
 
     s5.notes_slide.notes_text_frame.text = (
-        "[2:15 - 2:45] Here is the live verification against the 10 official reference samples. "
+        "=== বাংলা স্ক্রিপ্ট (BANGLA) [2:15 - 2:45] ===\n"
+        "এবার সরাসরি আমাদের সিস্টেমের ভেরিফিকেশন দেখে নেওয়া যাক। অফিসিয়াল ১০টি রেফারেন্স স্যাম্পল কেসের ওপর টেস্ট চালিয়ে "
+        "আমরা দেখতে পাচ্ছি: প্রতিটি অপারেটর ডিরেক্টিভ ১০০% প্রিসিশন নিয়ে এক্সট্র্যাক্ট হয়েছে। সলভার প্রতিটি ফিজিক্যাল কনস্ট্রেইন্ট "
+        "সফলভাবে বজায় রেখেছে, এবং আমাদের অপটিমাইজারের মোট খরচ অফিসিয়াল রেফারেন্স ফলাফলের সাথে প্রতিটি কেসেই ঠিক ০.০০০০ টাকা "
+        "(0.0000 BDT) পার্থক্যে নিখুঁতভাবে মিলে গেছে! পাশাপাশি, pytest tests/test_adversarial.py রান করলে আমাদের ৯১টি টেস্টের "
+        "সবকটিই গ্রিন পাস দেখায়, যা প্রমাণ করে সিস্টেমের অটুট নির্ভুলতা।\n\n"
+        "=== ENGLISH SCRIPT [2:15 - 2:45] ===\n"
+        "Here is the live verification against the 10 official reference samples. "
         "GridWise achieved 100% directive extraction precision and exactly 0.0000 BDT cost difference "
         "across all test cases. In addition, our 91 adversarial tests pass with zero exceptions."
     )
@@ -600,16 +656,23 @@ def build_pptx():
         cp.space_after = Pt(8)
 
     s6.notes_slide.notes_text_frame.text = (
-        "[2:45 - 3:00] In conclusion, GridWise is fully production-ready, passing every single pre-submit "
+        "=== বাংলা স্ক্রিপ্ট (BANGLA) [2:45 - 3:00] ===\n"
+        "GridWise সম্পূর্ণ প্রোডাকশন-রেডি। এটি লাইভ ক্লাউডে ডেপ্লয় করা হয়েছে, রয়েছে গিটহাব প্যাকেজে নন-রুট "
+        "মাল্টি-স্টেজ ডকার কন্টেইনার এবং কোডবেসে কোনো হার্ডকোডেড ক্রেডেনশিয়াল নেই। পেজ ১১-এর প্রি-সাবমিট চেকলিস্টের "
+        "১০টি আইটেমই সম্পূর্ণ সবুজ। বুদ্ধিদীপ্ত ভাষা অনুধাবন এবং নিখুঁত গাণিতিক অপটিমাইজেশনের মেলবন্ধনই হলো GridWise। "
+        "ধন্যবাদ BUP CSE Fest এবং Poridhi.io-কে!\n\n"
+        "=== ENGLISH SCRIPT [2:45 - 3:00] ===\n"
+        "In conclusion, GridWise is fully production-ready, passing every single pre-submit "
         "criterion with a live cloud API, GHCR Docker container, and 100% benchmark accuracy. "
         "Thank you to the BUP CSE Fest committee and Poridhi.io!"
     )
 
-    output_pptx = "presentation.pptx"
-    prs.save(output_pptx)
-    print(f"Successfully generated {output_pptx}")
-
+    try:
+        prs.save("presentation.pptx")
+        print("Successfully generated presentation.pptx")
+    except PermissionError:
+        prs.save("presentation_v2.pptx")
+        print("presentation.pptx is open in PowerPoint. Successfully generated presentation_v2.pptx instead!")
 
 if __name__ == "__main__":
     build_pptx()
-
