@@ -3,7 +3,7 @@
 *In association with Poridhi.io*
 
 [![Live API](https://img.shields.io/badge/Live_API-Railway_Deployed-success?style=for-the-badge&logo=railway)](https://gridwise-energy-optimizer-production.up.railway.app/health)
-[![Docker GHCR](https://img.shields.io/badge/Docker_Image-GHCR_Public-blue?style=for-the-badge&logo=docker)](https://github.com/users/happinessisreal/packages/container/gridwise-optimizer/settings)
+[![Docker GHCR](https://img.shields.io/badge/Docker_Image-GHCR_Public-blue?style=for-the-badge&logo=docker)](https://github.com/users/happinessisreal/packages/container/package/gridwise-optimizer)
 [![Public Samples](https://img.shields.io/badge/Public_Benchmark-10%2F10_PASSED_(0.0000_BDT)-brightgreen?style=for-the-badge)]()
 [![Pytest](https://img.shields.io/badge/Tests-97%2F97_PASSED-brightgreen?style=for-the-badge)]()
 [![Python](https://img.shields.io/badge/Python-3.11+-informational?style=for-the-badge&logo=python)]()
@@ -17,7 +17,7 @@
 | **🌐 Live Public Base URL** | [`https://gridwise-energy-optimizer-production.up.railway.app`](https://gridwise-energy-optimizer-production.up.railway.app) | Production deployment on Railway |
 | **🩺 Health Readiness Check** | [`GET /health`](https://gridwise-energy-optimizer-production.up.railway.app/health) | Returns `{"status":"ok"}` in < 80ms |
 | **⚡ Primary Optimization API** | `POST /optimize-energy` | Solves 24-hour LP under 5ms |
-| **🐳 Pullable Docker Image** | `docker pull ghcr.io/happinessisreal/gridwise-optimizer:latest` | Hosted on GitHub Container Registry (Multi-stage, non-root) |
+| **🐳 Pullable Docker Image** | [`docker pull ghcr.io/happinessisreal/gridwise-optimizer:latest`](https://github.com/users/happinessisreal/packages/container/package/gridwise-optimizer) | Hosted on GitHub Container Registry (Multi-stage, non-root) |
 | **📊 Interactive Presentation Deck** | [presentation.html](presentation.html) | Zero-dependency browser deck with ⏱️ 3-minute stopwatch |
 | **📽️ PowerPoint Slide Deck** | [presentation.pptx](presentation.pptx) | 16:9 widescreen slides with bilingual presenter notes |
 | **🎙️ 3-Minute Video Scripts** | [FINAL_VIDEO_SCRIPT.md](FINAL_VIDEO_SCRIPT.md) · [VIDEO_SCRIPT_BANGLA.md](VIDEO_SCRIPT_BANGLA.md) | Timed second-by-second (Bangla & English) |
